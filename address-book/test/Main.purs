@@ -28,19 +28,16 @@ main = run [consoleReporter] do
     describe "showEntry" do
       it "returns entry string" do
         let expectedString = "Smith, John: 123 Fake Str, FakeTown, CA"
-
         (AddressBook.showEntry entry) `shouldEqual` expectedString
 
     describe "insertEntry" do
       it "adds and entry to the list" do
         let book = AddressBook.emptyBook
-
         (AddressBook.insertEntry entry book) `shouldEqual` (fromFoldable [entry])
 
     describe "findEntry" do
       it "returns a matching entry" do
         let book = fromFoldable [entry]
-
         (AddressBook.findEntry "John" "Smith" book) `shouldEqual` Just entry
 
 
@@ -49,3 +46,12 @@ main = run [consoleReporter] do
         (AddressBook.findEntry "Foo" "Bar" book) `shouldEqual` Nothing
 
 
+    describe "findEntryByAddress" do
+      it "returns a matching entry by address" do
+        let book = fromFoldable [entry]
+        (AddressBook.findEntryByAddress "123 Fake Str" book) `shouldEqual` Just entry
+
+
+      it "return Nothing when it doesn't find an entry" do
+        let book = AddressBook.emptyBook
+        (AddressBook.findEntryByAddress "123 Fake Str" book) `shouldEqual` Nothing
